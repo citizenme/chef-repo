@@ -1,0 +1,4 @@
+= DESCRIPTION:
+
+This cookbook is used in the Fast Start Guide as an example.  All it does is render a template to ~/chef-getting-started.txt. It uses %HOMEPATH%\chef-getting-started.txt in Windows.
+

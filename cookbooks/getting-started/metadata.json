@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+  },
+  "name": "getting-started",
+  "maintainer_email": "sysadmin@opscode.com",
+  "attributes": {
+  },
+  "license": "Apache 2.0",
+  "suggestions": {
+  },
+  "platforms": {
+  },
+  "maintainer": "Opscode, Inc.",
+  "long_description": "= DESCRIPTION:\n\nThis cookbook is used in the Fast Start Guide as an example.  All it does is render a template to ~/chef-getting-started.txt. It uses %HOMEPATH%\\chef-getting-started.txt in Windows.\n\n",
+  "version": "0.4.0",
+  "recommendations": {
+  },
+  "recipes": {
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Used by the Fast Start guides at wiki.opscode.com",
+  "providing": {
+  }
+}
