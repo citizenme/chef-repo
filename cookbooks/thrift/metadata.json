@@ -1,0 +1,35 @@
+{
+  "name": "thrift",
+  "version": "1.2.0",
+  "description": "Installs thrift from source",
+  "long_description": "thrift Cookbook\n===============\nInstalls Thrift from source.\n\n\nRequirements\n------------\n### Platforms\n- Ubuntu 11.10\n- CentOS 6.4\n\n(Ubuntu 10.04 was tested but thrift would not compile cleanly)\n\n### Cookbooks\nOpscode cookbooks:\n\n- build-essential\n- java\n- boost\n\n\nUsage\n-----\nInclude the Thrift recipe to install Thrift from source on your systems.\n\n```ruby\ninclude_recipe \"thrift\"\n```\n\n\nLicense & Authors\n-----------------\n- Author:: Joshua Timberman (<joshua@opscode.com>)\n\n```text\nCopyright:: 2009-2011, Opscode, Inc.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n",
+  "maintainer": "Opscode, Inc.",
+  "maintainer_email": "cookbooks@opscode.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "centos": ">= 0.0.0"
+  },
+  "dependencies": {
+    "build-essential": ">= 0.0.0",
+    "boost": ">= 0.0.0",
+    "python": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "thrift": "Installs thrift from source"
+  }
+}
