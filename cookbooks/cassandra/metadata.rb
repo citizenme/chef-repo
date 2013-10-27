@@ -9,26 +9,21 @@ description      "Cassandra: a massively scalable high-performance distributed s
 depends          "java"
 depends          "apt"
 depends          "runit"
-depends          "thrift"
-depends          "iptables"
 depends          "volumes"
-depends          "metachef"
+depends          "silverware"
 depends          "install_from"
 
 recipe           "cassandra::autoconf",                "Automatically configure nodes from chef-server information."
 recipe           "cassandra::ec2snitch",               "Automatically configure properties snitch for clusters on EC2."
-recipe           "cassandra::iptables",                "Automatically configure iptables rules for cassandra."
 recipe           "cassandra::authentication",          "Authentication"
 recipe           "cassandra::bintools",                "Bintools"
 recipe           "cassandra::client",                  "Client"
 recipe           "cassandra::default",                 "Base configuration for cassandra"
-recipe           "cassandra::install_from_git",        "Install From Git"
 recipe           "cassandra::install_from_package",    "Install From Package"
 recipe           "cassandra::install_from_release",    "Install From Release"
 recipe           "cassandra::jna_support",             "Jna Support"
 recipe           "cassandra::mx4j",                    "Mx4j"
 recipe           "cassandra::server",                  "Server"
-recipe           "cassandra::ruby_client",             "support gems for cassandra (incl. fauna/cassandra and apache/avro)"
 
 %w[ debian ubuntu ].each do |os|
   supports os
@@ -42,7 +37,7 @@ attribute "cassandra/cluster_name",
 attribute "cassandra/home_dir",
   :display_name          => "",
   :description           => "Directories, hosts and ports        # =",
-  :default               => "/usr/local/share/cassandra"
+  :default               => "/usr/share/cassandra"
 
 attribute "cassandra/conf_dir",
   :display_name          => "",
@@ -52,13 +47,13 @@ attribute "cassandra/conf_dir",
 attribute "cassandra/commitlog_dir",
   :display_name          => "",
   :description           => "",
-  :default               => "/mnt/cassandra/commitlog"
+  :default               => "/var/lib/cassandra/commitlog"
 
 attribute "cassandra/data_dirs",
   :display_name          => "",
   :description           => "",
   :type                  => "array",
-  :default               => ["/data/db/cassandra"]
+  :default               => ["/var/lib/cassandra/data"]
 
 attribute "cassandra/saved_caches_dir",
   :display_name          => "",
@@ -116,16 +111,6 @@ attribute "cassandra/release_url",
   :description           => "install_from_release: tarball url",
   :default               => ":apache_mirror:/cassandra/:version:/apache-cassandra-:version:-bin.tar.gz"
 
-attribute "cassandra/git_repo",
-  :display_name          => "",
-  :description           => "Git repo location",
-  :default               => "git://git.apache.org/cassandra.git"
-
-attribute "cassandra/git_revision",
-  :display_name          => "",
-  :description           => "until ruby gem is updated, use cdd239dcf82ab52cb840e070fc01135efb512799",
-  :default               => "cdd239dcf82ab52cb840e070fc01135efb512799"
-
 attribute "cassandra/jna_deb_amd64_url",
   :display_name          => "",
   :description           => "JNA deb location",
@@ -145,7 +130,7 @@ attribute "cassandra/keyspaces",
 attribute "cassandra/authenticator",
   :display_name          => "Cassandra authenticator",
   :description           => "The IAuthenticator to be used for access control.",
-  :default               => "org.apache.cassandra.auth.AllowAllAuthenticator"
+  :default               => "AllowAllAuthenticator"
 
 attribute "cassandra/partitioner",
   :display_name          => "",
@@ -200,7 +185,7 @@ attribute "cassandra/memtable_flush_after",
 attribute "cassandra/concurrent_reads",
   :display_name          => "",
   :description           => "",
-  :default               => "8"
+  :default               => "32"
 
 attribute "cassandra/concurrent_writes",
   :display_name          => "",
@@ -353,9 +338,9 @@ attribute "cassandra/pid_dir",
   :default               => "/var/run/cassandra"
 
 attribute "cassandra/group",
-  :display_name          => "nogroup",
+  :display_name          => "cassandra",
   :description           => "The group that cassandra belongs to",
-  :default               => "nogroup"
+  :default               => "cassandra"
 
 attribute "cassandra/version",
   :display_name          => "",

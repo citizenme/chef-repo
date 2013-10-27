@@ -53,23 +53,23 @@
 clusters = data_bag_item('cassandra', 'clusters') rescue nil
 unless clusters.nil? || clusters[node[:cassandra][:cluster_name]].nil?
   clusters[node[:cassandra][:cluster_name]].each_pair do |k, v|
-    node[:cassandra][k] = v
+     node.default[:cassandra][k] = v
   end
 end
 
 # Configure the various addrs for binding
-node[:cassandra][:listen_addr] = private_ip_of(node)
-node[:cassandra][:rpc_addr]    = private_ip_of(node)
+node.default[:cassandra][:listen_addr] = private_ip_of(node)
+node.default[:cassandra][:rpc_addr]    = private_ip_of(node)
 # And find out who else provides cassandra in our cluster
 all_seeds  = discover_all(:elasticsearch, :seed).map(&:private_ip)
 all_seeds  = [private_ip_of(node), all_seeds] if (all_seeds.length < 2)
-node[:cassandra][:seeds] = all_seeds.flatten.compact.uniq.sort
+node.default[:cassandra][:seeds] = all_seeds.flatten.compact.uniq.sort
 
 # Pull the initial token from the cassandra data bag if one is given
 if node[:cassandra][:initial_tokens] && (not node[:facet_index].nil?)
-  node[:cassandra][:initial_token] = node[:cassandra][:initial_tokens][node[:facet_index].to_i]
+  node.default[:cassandra][:initial_token] = node[:cassandra][:initial_tokens][node[:facet_index].to_i]
 end
 # If there is an initial token, force auto_bootstrap to false.
-node[:cassandra][:auto_bootstrap] = false if node[:cassandra][:initial_token]
+node.default[:cassandra][:auto_bootstrap] = false if node[:cassandra][:initial_token]
 
 node_changed!

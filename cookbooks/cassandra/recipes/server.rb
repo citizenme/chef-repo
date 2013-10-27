@@ -19,21 +19,24 @@
 # limitations under the License.
 #
 
-include_recipe "runit"
-
-directory('/etc/sv/cassandra/env'){ owner 'root' ; action :create ; recursive true }
-runit_service "cassandra" do
-  options       node[:cassandra]
-  run_state     node[:cassandra][:run_state]
-end
+include_recipe("cassandra::autoconf")
 
 include_recipe("cassandra::authentication")
 
 template "#{node[:cassandra][:conf_dir]}/log4j-server.properties" do
   source        "log4j-server.properties.erb"
-  owner         "root"
-  group         "root"
+  owner         node[:cassandra][:user]
+  group         node[:cassandra][:group]
   mode          "0644"
+  variables     :cassandra => node[:cassandra]
+  notifies      :restart, "service[cassandra]", :delayed if startable?(node[:cassandra])
+end
+
+template "#{node[:cassandra][:conf_dir]}/cassandra-env.sh" do
+  source        "cassandra-env.sh.erb"
+  owner         node[:cassandra][:user]
+  group         node[:cassandra][:group]
+  mode          "0755"
   variables     :cassandra => node[:cassandra]
   notifies      :restart, "service[cassandra]", :delayed if startable?(node[:cassandra])
 end
@@ -59,9 +62,9 @@ seed_ips.sort!
 #
 template "#{node[:cassandra][:conf_dir]}/cassandra.yaml" do
   source        "cassandra.yaml.erb"
-  owner         "root"
-  group         "root"
-  mode          "0644"
+  owner         node[:cassandra][:user]
+  group         node[:cassandra][:group]
+  mode          "0640"
   variables({
                 :cassandra => node[:cassandra],
                 :seeds     => seed_ips
@@ -70,3 +73,14 @@ template "#{node[:cassandra][:conf_dir]}/cassandra.yaml" do
 end
 
 announce(:cassandra, :server)
+
+# == Service
+
+include_recipe "runit"
+
+directory('/etc/sv/cassandra/env'){ owner 'root' ; action :create ; recursive true }
+runit_service "cassandra" do
+  options       node[:cassandra]
+#  run_state     node[:cassandra][:run_state]
+end
+

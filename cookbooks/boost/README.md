@@ -3,6 +3,13 @@ Description
 
 Installs boost, mainly to support Thrift.
 
+Changes
+=======
+
+## v0.1.0:
+
+* Current public release.
+
 Requirements
 ============
 

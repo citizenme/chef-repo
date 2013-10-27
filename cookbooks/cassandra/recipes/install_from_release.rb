@@ -19,6 +19,12 @@
 # limitations under the License.
 #
 
+# == Users
+
+daemon_user(:cassandra) do
+  create_group  true
+end
+
 include_recipe 'install_from'
 
 install_from_release(:cassandra) do
@@ -30,23 +36,11 @@ install_from_release(:cassandra) do
   not_if{ ::File.exists?("#{node[:cassandra][:install_dir]}/bin/cassandra") }
 end
 
-bash 'move storage-conf out of the way' do
-  user         'root'
-  cwd          node[:cassandra][:home_dir]
-  code         'mv conf/storage-conf.xml conf/storage-conf.xml.orig'
-  not_if{  File.symlink?("#{node[:cassandra][:home_dir]}/storage-conf.xml") }
-  only_if{ File.exists?( "#{node[:cassandra][:home_dir]}/storage-conf.xml") }
-end
-
-link "#{node[:cassandra][:conf_dir]}/storage-conf.xml" do
-  to "#{node[:cassandra][:home_dir]}/conf/storage-conf.xml"
-  action        :create
-  only_if{ File.exists?( "#{node[:cassandra][:conf_dir]}/storage-conf.xml") }
-end
-
-link "#{node[:cassandra][:home_dir]}/cassandra.in.sh" do
-  to "#{node[:cassandra][:home_dir]}/bin/cassandra.in.sh"
-  action        :create
-end
+#link "#{node[:cassandra][:home_dir]}/cassandra.in.sh" do
+#  to "#{node[:cassandra][:home_dir]}/bin/cassandra.in.sh"
+#  action        :create
+#end
 
 include_recipe "cassandra::bintools"
+
+

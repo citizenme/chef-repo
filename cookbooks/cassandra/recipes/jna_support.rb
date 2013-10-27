@@ -21,12 +21,9 @@
 
 # XXX: Only supports Ubuntu x86_64
 if node[:platform].downcase == "ubuntu" && node[:kernel][:machine] == "x86_64"
-  bash "install_libjna-java" do
-    dlfile = "libjna-java_amd64.deb"
-    user        "root"
-    cwd         "/tmp"
-    code        %Q{wget -q -O #{dlfile} #{node[:cassandra][:jna_deb_amd64_url]} && dpkg -i #{dlfile}}
-    not_if      "dpkg -s libjna-java | egrep '^Status: .* installed' > /dev/null"
+
+  package "libjna-java" do
+    action :install
   end
 
   # Link into our cassandra directory

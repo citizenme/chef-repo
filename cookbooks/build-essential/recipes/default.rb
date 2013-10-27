@@ -17,8 +17,29 @@
 # limitations under the License.
 #
 
-begin
-  include_recipe "build-essential::#{node['platform_family']}"
-rescue Chef::Exceptions::RecipeNotFound
-  Chef::Log.warn "A build-essential recipe does not exist for the platform_family: #{node['platform_family']}"
+case node['platform']
+when "ubuntu","debian"
+  %w{build-essential binutils-doc}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
+when "centos","redhat","fedora"
+  %w{gcc gcc-c++ kernel-devel make}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
+end
+
+package "autoconf" do
+  action :install
+end
+
+package "flex" do
+  action :install
+end
+
+package "bison" do
+  action :install
 end

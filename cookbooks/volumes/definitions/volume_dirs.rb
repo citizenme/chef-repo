@@ -51,7 +51,7 @@ define(:volume_dirs,
   else
     raise "Please provide a system and an aspect (eg 'redis.log'), or system.subsystem.aspect (eg 'hadoop.namenode.data'): got #{params[:name]}"
   end
-  component = ClusterChef::Component.new(node, sys, subsys)
+  component = Ironfan::Component.new(node, sys, subsys)
 
   params[:selects] ||= :all
   raise "Please select either :all or :single" unless ['all', 'single'].include?(params[:selects].to_s)
@@ -67,11 +67,11 @@ define(:volume_dirs,
   if paths.empty?
     # default path to "sys/subsys/aspect", eg "graphite/carbon/log"
     sub_path = params[:path] || File.join(*[sys, subsys, aspect].compact.map{|s| s.to_s})
-    # look for "graphite.carbon.log", "graphite.log", "log", or fallback
+    # look for "graphite.carbon.log", "graphite.log", "graphite", "log", or fallback
     volumes = volumes_tagged(node,
-      "#{sys}_#{subsys}_#{aspect}", "#{sys}_#{aspect}", params[:type], 'fallback')
+      "#{sys}_#{subsys}_#{aspect}", "#{sys}_#{aspect}", sys, params[:type], 'fallback')
     # singularize if :single
-    volumes = [volumes.first] if (params[:selects] == :single)
+    volumes = Hash[*volumes.first] if (params[:selects] == :single)
     # slap path on the end of volume roots
     paths  = volumes.map{|vol, vol_info| ::File.expand_path(sub_path, vol_info[:mount_point]) }
   end

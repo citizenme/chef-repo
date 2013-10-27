@@ -23,25 +23,26 @@ case node['java']['jdk_version']
 when "6"
   tarball_url = node['java']['jdk']['6']['i586']['url']
   tarball_checksum = node['java']['jdk']['6']['i586']['checksum']
-  bin_cmds = node['java']['jdk']['6']['bin_cmds']
 when "7"
   tarball_url = node['java']['jdk']['7']['i586']['url']
   tarball_checksum = node['java']['jdk']['7']['i586']['checksum']
-  bin_cmds = node['java']['jdk']['7']['bin_cmds']
 end
 
-include_recipe "java::set_java_home"
+ruby_block  "set-env-java-home" do
+  block do
+    ENV["JAVA_HOME"] = java_home
+  end
+end
 
 yum_package "glibc" do
   arch "i686"
-  only_if { platform_family?( "rhel", "fedora" ) }
+#  provider Chef::Provider::Package::Yum
 end
 
 java_ark "jdk-alt" do
   url tarball_url
   checksum tarball_checksum
   app_home java_home
-  bin_cmds bin_cmds
-  action :install
   default false
+  action :install
 end

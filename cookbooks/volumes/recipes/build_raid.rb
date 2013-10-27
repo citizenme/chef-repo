@@ -29,31 +29,41 @@ package('mdadm'){ action :nothing }.run_action(:install)
 #
 # Assemble raid groups using volumes defined in node metadata -- see volumes/libraries/volumes.rb
 #
-Metachef.raid_groups(node).each do |rg_name, rg|
+Silverware.raid_groups(node).each do |rg_name, rg|
 
-  sub_vols = sub_volumes(node, rg)
+  sub_vols = sub_volumes(node, rg).values.reject{|sv| sv.device.nil? }
 
-  Chef::Log.info(rg.inspect)
-  Chef::Log.info( sub_vols.values.inspect )
+  Chef::Log.debug( rg.inspect )
+  Chef::Log.debug( sub_vols.inspect )
+
+  #
+  # * failing on apt-get install of mdadm? Run `sudo apt-get update` and re-run chef.
+  # * failing on mount of ebs volumes with "mount: Structure needs cleaning"? Run `sudo mkfs.xfs -f /dev/md1` and re-run chef.
+  #
 
   #
   # unmount all devices tagged for that raid group
   #
-  sub_vols.each do |_, sub_vol|
-    mount sub_vol.mount_point do
+  sub_vols.each do |sub_vol|
+    next if sub_vol.mount_point.to_s == ''
+    act = mount sub_vol.mount_point do
       device sub_vol.device
-      action [:umount, :disable]
+      action :nothing
     end
+    act.run_action(:umount)
+    act.run_action(:disable)
   end
 
   #
   # Create the raid array
   #
-  mdadm(rg.device) do
-    devices   sub_vols.values.map(&:device)
+  act = mdadm(rg.device) do
+    devices   sub_vols.map(&:device)
     level     0
-    action    [:create, :assemble]
+    action    :nothing
   end
+  act.run_action(:create)
+  act.run_action(:assemble)
 
   # # Scan
   # File.open("/etc/mdadm/mdadm.conf", "a") do |f|
@@ -65,14 +75,18 @@ Metachef.raid_groups(node).each do |rg_name, rg|
   #   code      "blockdev --setra #{raid_group.read_ahead} #{raid_group.device}"
   # end
 
+  # Chef::Log.debug([rg.formattable?, rg.ready_to_format?, rg[:formatted], `file -s #{rg.device}`].inspect)
+
   if rg.formattable?
     if rg.ready_to_format?
-      bash "format #{rg.name} (#{rg.sub_volumes})" do
+      act = bash "format #{rg.name} (#{rg.sub_volumes})" do
         user      "root"
-        # Returns success iff the drive is formatted XFS
+        # Returns success iff the drive is formatted XFS.
         code      %Q{ mkfs.xfs -f #{rg.device} ; file -s #{rg.device} | grep XFS }
         not_if("file -s #{rg.device} | grep XFS")
+        action(:nothing)
       end
+      act.run_action(:run)
       rg.formatted!
     else
       Chef::Log.warn("Not formatting #{rg.name}. Volume is unready: (#{rg.inspect})")

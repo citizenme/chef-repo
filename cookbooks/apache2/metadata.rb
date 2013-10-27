@@ -1,12 +1,10 @@
-name              "apache2"
 maintainer        "Opscode, Inc."
 maintainer_email  "cookbooks@opscode.com"
 license           "Apache 2.0"
 description       "Installs and configures all aspects of apache2 using Debian style symlinks with helper definitions"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "1.7.0"
+version          IO.read(File.join(File.dirname(__FILE__), 'VERSION'))
 recipe            "apache2", "Main Apache configuration"
-recipe            "apache2::logrotate", "Rotate apache2 logs. Requires logrotate cookbook"
 recipe            "apache2::mod_alias", "Apache module 'alias' with config file"
 recipe            "apache2::mod_apreq2", "Apache module 'apreq'"
 recipe            "apache2::mod_auth_basic", "Apache module 'auth_basic'"
@@ -28,7 +26,6 @@ recipe            "apache2::mod_env", "Apache module 'env'"
 recipe            "apache2::mod_expires", "Apache module 'expires'"
 recipe            "apache2::mod_fcgid", "Apache module 'fcgid', package on ubuntu/debian, rhel/centos, compile source on suse; with config file"
 recipe            "apache2::mod_headers", "Apache module 'headers'"
-recipe            "apache2::mod_include", "Apache module 'include'"
 recipe            "apache2::mod_ldap", "Apache module 'ldap'"
 recipe            "apache2::mod_log_config", "Apache module 'log_config'"
 recipe            "apache2::mod_mime", "Apache module 'mime' with config file"
@@ -47,7 +44,7 @@ recipe            "apache2::mod_ssl", "Apache module 'ssl' with config file, add
 recipe            "apache2::mod_status", "Apache module 'status' with config file"
 recipe            "apache2::mod_xsendfile", "Apache module 'xsendfile'"
 
-%w{redhat centos scientific fedora debian ubuntu arch freebsd amazon}.each do |os|
+%w{redhat centos scientific fedora debian ubuntu arch freebsd}.each do |os|
   supports os
 end
 
@@ -85,7 +82,7 @@ attribute "apache/listen_ports",
   :display_name => "Apache Listen Ports",
   :description => "Ports that Apache should listen on",
   :type => "array",
-  :default => ["80", "443"]
+  :default => [ "80", "443" ]
 
 attribute "apache/contact",
   :display_name => "Apache Contact",
@@ -206,8 +203,3 @@ attribute "apache/default_modules",
   :display_name => "Apache Default Modules",
   :description => "Default modules to enable via recipes",
   :default => "status alias auth_basic authn_file authz_default authz_groupfile authz_host authz_user autoindex dir env mime negotiation setenvif"
-
-attribute "apache/mod_ssl/cipher_suite",
-  :display_name => "Apache mod_ssl Cipher Suite",
-  :description => "String of SSL ciphers to use for SSLCipherSuite",
-  :default => "RC4-SHA:HIGH:!ADH"

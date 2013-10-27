@@ -23,7 +23,7 @@ include_recipe "apt"
 
 apt_repository "apache-cassandra" do
   uri "http://www.apache.org/dist/cassandra/debian"
-  distribution "10x"
+  distribution "20x"
   components ["main"]
   action :add
   keyserver "pgp.mit.edu"
@@ -35,7 +35,7 @@ end
 # is to add the second key
 apt_repository "apache-cassandra-extrakey" do
   uri "http://www.apache.org/dist/cassandra/debian"
-  distribution "10x"
+  distribution "20x"
   components ["main"]
   action :add
   keyserver "pgp.mit.edu"

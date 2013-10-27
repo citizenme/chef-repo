@@ -1,4 +1,4 @@
-module Metachef
+module Silverware
   class SimpleVolume < Mash
     attr_reader :node
 
@@ -22,7 +22,7 @@ module Metachef
     def inspect
       str = [super()[2..-2]]
       str << "ohai_fstype:#{current[:fstype]}"
-      "<#{self.class} #{str.join(" ")} #{current} a?#{attached?} m?#{mounted?} f?#{formattable?} r?#{resizable?}>"
+      "<#{self.class} #{str.join(" ")} #{current} a?#{attached?} m?#{mounted?} f?#{formattable?} f!#{self[:formatted]} r?#{resizable?} r!#{self[:resized]} >"
     end
 
     # if device_type is :device, checks that the device is present.
@@ -34,6 +34,7 @@ module Metachef
 
     # True if the volume is mounted
     def mounted?
+      return true if self[:mounted] or node[:volumes][name][:mounted]
       !!( attached? && mount_point && File.exists?(mount_point) && current[:mount] == mount_point )
     end
 
@@ -54,7 +55,7 @@ module Metachef
     end
 
     def ready_to_format?
-      !!( formattable? && attached? && (not mounted?) && (`file -s #{device}`.chomp =~ /: data/) )
+      !!( formattable? && attached? && (not mounted?) && (`file -s #{device}`.chomp =~ /\bdata\b/) )
     end
 
     def in_raid?
@@ -78,7 +79,7 @@ module Metachef
     # Use `file -s` to identify volume type: ohai doesn't seem to want to do so.
     def fstype
       return self['fstype'] if has_key?('fstype')
-      Chef::Log.info([
+      Chef::Log.debug([
           self['fstype'], current[:fstype],
           File.exists?(device) && `file -s '#{device}'`.chomp,
           self,
@@ -103,16 +104,21 @@ module Metachef
       curr
     end
 
+    def mounted!
+      self[:mounted] = true
+      node.set[:volumes][name][:mounted] = true
+    end
+
     # volume was resized, so mark it as no longer needing resize
     def resized!
       self[:resized] = true
-      node[:volumes][name][:resized] = true
+      node.set[:volumes][name][:resized] = true
     end
 
     # volume was formatted, so mark it as no longer needing format
     def formatted!
       self[:formatted] = true
-      node[:volumes][name][:formatted] = true
+      node.set[:volumes][name][:formatted] = true
     end
 
     # On Xen virtualization systems (eg EC2), the volumes are *renamed* from
@@ -123,10 +129,14 @@ module Metachef
     # **and** there are /dev/xvdXX devices, we relabel all the /dev/sdXX device
     # points to be /dev/xvdXX.
     def fix_for_xen!
-      return unless node[:virtualization] && (node[:virtualization][:system] == 'xen')
-      return unless (Dir['/dev/sd*'].empty?) && (not Dir['/dev/xvd*'].empty?)
-      return unless device
-      self['device'].gsub!(%r{^/dev/sd}, '/dev/xvd')
+      return unless device && node[:virtualization] && (node[:virtualization][:system] == 'xen')
+      new_device_name = device.gsub(%r{^/dev/sd}, '/dev/xvd')
+      if node[:platform] == 'redhat'
+        pre, dev, num = /(\/dev\/xvd)(\w)(\d*)/.match(new_device_name)[1..3]
+        new_device_name = pre + (dev.ord + 4).chr + num
+      end
+      return unless (Dir[device].empty?) && (not Dir[new_device_name].empty?)
+      self['device'] = new_device_name
     end
   end
 end

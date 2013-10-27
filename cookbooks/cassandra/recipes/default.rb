@@ -21,22 +21,62 @@
 
 # == Recipes
 
-include_recipe "metachef"
-include_recipe "volumes"
+include_recipe "silverware"
 include_recipe "java" ; complain_if_not_sun_java(:cassandra)
-include_recipe "thrift"
 
-# == Packages
 
-# == Users
+# == Volumes
 
-daemon_user(:cassandra) do
-  create_group  false
+#include_recipe "volumes"
+
+#standard_dirs('cassandra') do
+#  directories   [:conf_dir, :log_dir, :lib_dir, :pid_dir, :data_dirs, :commitlog_dir, :saved_caches_dir]
+#  user          node[:cassandra][:user]
+#  group         node[:cassandra][:group]
+#end
+
+directory node[:cassandra][:conf_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
 end
 
-# == Directories
-
-standard_dirs('cassandra') do
-  directories   [:conf_dir, :log_dir, :lib_dir, :pid_dir, :data_dirs, :commitlog_dir, :saved_caches_dir]
-  group         'root'
+directory node[:cassandra][:log_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
 end
+
+directory node[:cassandra][:lib_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
+end
+
+
+directory node[:cassandra][:pid_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
+end
+
+@node[:cassandra][:data_dirs].each do |data_dir|
+  directory data_dir do
+    owner node[:cassandra][:user]
+    group node[:cassandra][:group]
+    action :create
+  end
+end
+
+directory node[:cassandra][:commitlog_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
+end
+
+directory node[:cassandra][:saved_caches_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  action :create
+end
+

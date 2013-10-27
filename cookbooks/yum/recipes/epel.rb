@@ -4,8 +4,6 @@
 # Recipe:: epel
 #
 # Copyright:: Copyright (c) 2011 Opscode, Inc.
-# Copyright 2010, Eric G. Wolfe
-# Copyright 2010, Tippr Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,17 +17,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-yum_key node['yum']['epel']['key'] do
-  url  node['yum']['epel']['key_url']
-  action :add
+major = node['platform_version'].to_i
+epel  = node['yum']['epel_release']
+
+# If rpm installation from a URL supported 302's, we'd just use that.
+# Instead, we get to remote_file then rpm_package.
+
+remote_file "#{Chef::Config[:file_cache_path]}/epel-release-#{epel}.noarch.rpm" do
+  source "http://download.fedoraproject.org/pub/epel/#{major}/i386/epel-release-#{epel}.noarch.rpm"
+  not_if "rpm -qa | egrep -qx 'epel-release-#{epel}(|.noarch)'"
 end
 
-yum_repository "epel" do
-  description "Extra Packages for Enterprise Linux"
-  key node['yum']['epel']['key']
-  url node['yum']['epel']['baseurl']
-  mirrorlist node['yum']['epel']['url']
-  includepkgs node['yum']['epel']['includepkgs']
-  exclude node['yum']['epel']['exclude']
-  action platform?('amazon') ? [:add, :update] : :add
+rpm_package "epel-release" do
+  source "#{Chef::Config[:file_cache_path]}/epel-release-#{epel}.noarch.rpm"
+  only_if {::File.exists?("#{Chef::Config[:file_cache_path]}/epel-release-#{epel}.noarch.rpm")}
+end
+
+file "epel-release-cleanup" do
+  path "#{Chef::Config[:file_cache_path]}/epel-release-#{epel}.noarch.rpm"
+  action :delete
 end

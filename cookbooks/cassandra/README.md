@@ -8,7 +8,7 @@ Cassandra: a massively scalable high-performance distributed storage system
 
 Cookbook based on Benjamin Black's (<b@b3k.us>) -- original at http://github.com/b/cookbooks/tree/cassandra/cassandra/
 
-Modified to use `metachef` discovery and options preparation.
+Modified to use `silverware` discovery and options preparation.
 
 ## Recipes 
 
@@ -18,10 +18,8 @@ Modified to use `metachef` discovery and options preparation.
 * `client`                   - Client
 * `default`                  - Base configuration for cassandra
 * `ec2snitch`                - Automatically configure properties snitch for clusters on EC2.
-* `install_from_git`         - Install From Git
 * `install_from_package`     - Install From Package
 * `install_from_release`     - Install From Release
-* `iptables`                 - Automatically configure iptables rules for cassandra.
 * `jna_support`              - Jna Support
 * `mx4j`                     - Mx4j
 * `ruby_client`              - support gems for cassandra (incl. fauna/cassandra and apache/avro)
@@ -38,7 +36,7 @@ Cookbook dependencies:
 * thrift
 * iptables
 * volumes
-* metachef
+* silverware
 * install_from
 
 
@@ -59,17 +57,12 @@ Cookbook dependencies:
 * `[:cassandra][:rpc_addr]`           -  (default: "localhost")
 * `[:cassandra][:rpc_port]`           -  (default: "9160")
 * `[:cassandra][:storage_port]`       -  (default: "7000")
-* `[:cassandra][:jmx_dash_port]`      -  (default: "12345")
+* `[:cassandra][:jmx_port]`           -  (default: "7199")
 * `[:cassandra][:mx4j_port]`          -  (default: "8081")
 * `[:cassandra][:mx4j_addr]`          -  (default: "127.0.0.1")
 * `[:cassandra][:release_url]`        -  (default: ":apache_mirror:/cassandra/:version:/apache-cassandra-:version:-bin.tar.gz")
   - install_from_release: tarball url
 * `[:cassandra][:git_repo]`           -  (default: "git://git.apache.org/cassandra.git")
-  - Git repo location
-* `[:cassandra][:git_revision]`       -  (default: "cdd239dcf82ab52cb840e070fc01135efb512799")
-  - until ruby gem is updated, use cdd239dcf82ab52cb840e070fc01135efb512799
-* `[:cassandra][:jna_deb_amd64_url]`  -  (default: "http://debian.riptano.com/maverick/pool/libjna-java_3.2.7-0~nmu.2_amd64.deb")
-  - JNA deb location
 * `[:cassandra][:auto_bootstrap]`     - Cassandra automatic boostrap boolean (default: "false")
   - Boolean indicating whether a node should automatically boostrap on startup.
 * `[:cassandra][:keyspaces]`          - Cassandra keyspaces
@@ -125,7 +118,7 @@ Cookbook dependencies:
 * `[:cassandra][:log_dir]`            -  (default: "/var/log/cassandra")
 * `[:cassandra][:lib_dir]`            -  (default: "/var/lib/cassandra")
 * `[:cassandra][:pid_dir]`            -  (default: "/var/run/cassandra")
-* `[:cassandra][:group]`              - nogroup (default: "nogroup")
+* `[:cassandra][:group]`              - cassandra (default: "cassandra")
   - The group that cassandra belongs to
 * `[:cassandra][:version]`            -  (default: "0.7.10")
   - install_from_release
