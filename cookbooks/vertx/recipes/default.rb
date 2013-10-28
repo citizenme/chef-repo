@@ -44,3 +44,12 @@ template "#{node[:vertx][:conf_dir]}/logging.properties" do
 end
 
 
+template "#{node[:vertx][:conf_dir]}/repos.txt" do
+  source        "repos.txt.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :vertx => node[:vertx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+

@@ -10,3 +10,11 @@ default[:vertx][:group]             = 'vertx'
 default[:users][:vertx][:uid]       = 2003
 default[:users][:vertx][:gid]       = 2003
 
+default[:vertx][:releases_url]      = 'maven:http://mgmt.internal.virtuability.com:8081/nexus/content/repositories/releases'
+default[:vertx][:snapshots_url]     = 'maven:http://mgmt.internal.virtuability.com:8081/nexus/content/repositories/snapshots'
+
+default[:vertx][:mod] = 'com.virtuability~citizenme-service~0.1'
+
+# data_bag_item('vertx', 'conf') with environment specific configuration
+default[:vertx][:env] = 'production'
+
