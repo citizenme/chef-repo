@@ -6,5 +6,5 @@ default[:tos_sources][:group]             = 'vertx'
 default[:users][:tos_sources][:uid]       = 2003
 default[:users][:tos_sources][:gid]       = 2003
 
-default[:tos_sources][:tosdr_repo_url]    = 'git@github.com:tosdr/tosdr.org.git'
-default[:tos_sources][:jdm_repo_url]      = 'git@github.com:rmlewisuk/justdelete.me.git'
+default[:tos_sources][:tosdr_repo_url]    = 'https://github.com/tosdr/tosdr.org.git'
+default[:tos_sources][:jdm_repo_url]      = 'https://github.com/rmlewisuk/justdelete.me.git'
