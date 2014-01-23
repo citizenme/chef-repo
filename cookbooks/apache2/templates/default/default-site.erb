@@ -10,16 +10,14 @@
   <Directory <%= node['apache']['docroot_dir'] %>/>
     Options Indexes FollowSymLinks MultiViews
     AllowOverride None
-    Order allow,deny
-    Allow from all
+    Require all granted
   </Directory>
 
   ScriptAlias /cgi-bin/ <%= node['apache']['cgibin_dir'] %>/
   <Directory "<%= node['apache']['cgibin_dir'] %>">
     AllowOverride None
     Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
-    Order allow,deny
-    Allow from all
+    Require all granted
   </Directory>
 
   ErrorLog <%= node['apache']['log_dir'] %>/<%= node['apache']['error_log'] %>
@@ -35,8 +33,7 @@
   <Directory "/usr/share/doc/">
     Options Indexes MultiViews FollowSymLinks
     AllowOverride None
-    Order deny,allow
-    Deny from all
+    Require all denied
     Allow from 127.0.0.0/255.0.0.0 ::1/128
   </Directory>
 

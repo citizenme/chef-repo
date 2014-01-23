@@ -55,7 +55,7 @@ when 'debian', 'ubuntu'
   default['apache']['cgibin_dir']  = '/usr/lib/cgi-bin'
   default['apache']['icondir']     = '/usr/share/apache2/icons'
   default['apache']['cache_dir']   = '/var/cache/apache2'
-  default['apache']['pid_file']    = '/var/run/apache2.pid'
+  default['apache']['pid_file']    = '/var/run/apache2/apache2.pid'
   default['apache']['lib_dir']     = '/usr/lib/apache2'
   default['apache']['libexecdir']  = "#{node['apache']['lib_dir']}/modules"
   default['apache']['default_site_enabled'] = false
@@ -168,7 +168,7 @@ default['apache']['proxy']['allow_from'] = 'none'
 # Default modules to enable via include_recipe
 
 default['apache']['default_modules'] = %w[
-  status alias auth_basic authn_file authz_default authz_groupfile authz_host authz_user autoindex
+  status alias auth_basic authn_file authz_groupfile authz_host authz_user autoindex
   dir env mime negotiation setenvif
 ]
 

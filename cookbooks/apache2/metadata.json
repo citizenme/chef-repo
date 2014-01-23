@@ -291,7 +291,6 @@
         "alias",
         "auth_basic",
         "authn_file",
-        "authz_default",
         "authz_groupfile",
         "authz_host",
         "authz_user",

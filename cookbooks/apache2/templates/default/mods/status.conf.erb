@@ -7,9 +7,7 @@
   #
   <Location /server-status>
     SetHandler server-status
-    Order deny,allow
-    Deny from all
-    Allow from <%= node['apache']['status_allow_list'] %>
+    Require host <%= node['apache']['status_allow_list'] %>
   </Location>
 
   #
