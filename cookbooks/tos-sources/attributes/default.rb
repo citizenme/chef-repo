@@ -8,3 +8,5 @@ default[:users][:tos_sources][:gid]       = 2003
 
 default[:tos_sources][:tosdr_repo_url]    = 'https://github.com/tosdr/tosdr.org.git'
 default[:tos_sources][:jdm_repo_url]      = 'https://github.com/rmlewisuk/justdelete.me.git'
+default[:tos_sources][:citizenme_tos_url] = 'https://github.com/citizenme/Content.git'
+

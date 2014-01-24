@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "java"
+
 daemon_user(:vertx) do
   create_group  true
 end

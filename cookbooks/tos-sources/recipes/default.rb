@@ -38,4 +38,12 @@ git node[:tos_sources][:git_dir] + "/justdelete.me" do
   action :checkout
 end
 
+# citizenme merged ToS content
+git node[:tos_sources][:git_dir] + "/Content" do
+  repository node[:tos_sources][:citizenme_tos_url]
+  reference "master"
+  user  node[:tos_sources][:user]
+  group node[:tos_sources][:group]
+  action :checkout
+end
 

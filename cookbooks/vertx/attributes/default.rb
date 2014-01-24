@@ -13,8 +13,10 @@ default[:users][:vertx][:gid]       = 2003
 default[:vertx][:releases_url]      = 'maven:https://build.cloud.citizenme.com/nexus/content/repositories/releases'
 default[:vertx][:snapshots_url]     = 'maven:https://build.cloud.citizenme.com/nexus/content/repositories/snapshots'
 
-default[:vertx][:mod] = 'com.citizenme~citizenme-service~0.1-SNAPSHOT'
+# default[:vertx][:mod] = 'com.citizenme~ToS-Load~0.1-SNAPSHOT'
+default[:vertx][:mod] = ''
 
-# data_bag_item('vertx', 'conf') with environment specific configuration
-default[:vertx][:env] = 'production'
+# data_bag_item('vertx', node[:vertx][:mod_conf_name] ) [node.chef_environment] hash for environment specific configuration 
+# Resulting configuration file is also named "#{node[:vertx][:mod_conf_name]}.conf"
+default[:vertx][:mod_conf_name]     = ''
 
