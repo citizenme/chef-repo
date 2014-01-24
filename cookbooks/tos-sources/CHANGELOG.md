@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the tos-sources cookbo
 
 0.1.0
 -----
-- [your_name] - Initial release of tos-sources
+- Morten Jensen - Initial release of tos-sources
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

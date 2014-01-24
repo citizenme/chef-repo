@@ -7,3 +7,7 @@ validation_key           '/home/ubuntu/.chef/chef-validator.pem'
 chef_server_url          'https://chefserver.cloud.citizenme.com'
 syntax_check_cache_path  '/home/ubuntu/.chef/syntax_check_cache'
 cookbook_path [ '/home/ubuntu/chef-repo/cookbooks' ]
+cookbook_copyright       "citizenme"
+cookbook_email           "info@citizenme.com"
+cookbook_license         "apachev2"
+
