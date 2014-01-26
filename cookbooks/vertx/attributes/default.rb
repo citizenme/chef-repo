@@ -20,4 +20,4 @@ default[:vertx][:mod] = ''
 # data_bag_item('vertx', node[:vertx][:mod_conf_name] ) [node.chef_environment] hash for environment specific configuration 
 # Resulting configuration file is also named "#{node[:vertx][:mod_conf_name]}.conf"
 default[:vertx][:mod_conf_name]     = ''
-
+default[:vertx][:supervisor_conf_dir] = '/etc/supervisor.d'

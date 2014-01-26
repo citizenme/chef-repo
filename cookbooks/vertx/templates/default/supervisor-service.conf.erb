@@ -1,0 +1,9 @@
+[program:<%= @vertx[:mod] %>]
+command=<%= @vertx[:conf_dir] + "/" + @vertx[:mod] + ".run" %>
+process_name=<%= @vertx[:mod] %>
+autostart=true
+autorestart=true
+stopsignal=QUIT
+user=<%= @vertx[:user] %>
+group=<%= @vertx[:group] %>
+
