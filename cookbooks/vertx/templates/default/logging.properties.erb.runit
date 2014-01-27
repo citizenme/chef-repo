@@ -22,7 +22,7 @@ java.util.logging.FileHandler.level=INFO
 java.util.logging.FileHandler.formatter=org.vertx.java.core.logging.impl.VertxLoggerFormatter
 
 # Put the log in the system temporary directory
-java.util.logging.FileHandler.pattern=<%= @vertx[:log_dir] + "/" + @vertx[:mod] + ".log" %>
+java.util.logging.FileHandler.pattern=<%= @vertx[:log_dir] %>/vertx.log
 
 .level=INFO
 org.vertx.level=INFO

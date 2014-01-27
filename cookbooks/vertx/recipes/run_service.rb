@@ -17,3 +17,12 @@ template "#{node[:vertx][:supervisor_conf_dir]}/#{node[:vertx][:mod]}.conf" do
   notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 
+template "#{node[:vertx][:mods_dir]}/#{node[:vertx][:mod]}-logging.properties" do
+  source        "logging.properties.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :vertx => node[:vertx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+
