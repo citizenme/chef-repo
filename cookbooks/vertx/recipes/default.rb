@@ -10,6 +10,7 @@
 include_recipe "java"
 
 daemon_user(:vertx) do
+  action        :create
   create_group  true
 end
 

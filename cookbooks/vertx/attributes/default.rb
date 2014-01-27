@@ -8,8 +8,8 @@ default[:vertx][:log_dir] = '/var/log/vertx'
 
 default[:vertx][:user]              = 'vertx'
 default[:vertx][:group]             = 'vertx'
-default[:users][:vertx][:uid]       = 2003
-default[:users][:vertx][:gid]       = 2003
+default[:users][:vertx]             = 2003
+default[:groups][:vertx]            = 2003
 
 default[:vertx][:releases_url]      = 'maven:http://build.cloud.citizenme.com/nexus/content/repositories/releases'
 default[:vertx][:snapshots_url]     = 'maven:http://build.cloud.citizenme.com/nexus/content/repositories/snapshots'
