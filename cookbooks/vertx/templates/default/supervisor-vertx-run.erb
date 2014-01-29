@@ -20,6 +20,9 @@ export MOD_CONF=<%= File.join(@vertx[:mods_dir], @vertx[:mod] + ".conf") %>
 # JVM options from Chef in lieu of settings below:
 JVM_OPTS="<%= @vertx[:jvm_opts] %>"
 
+# vertx command options in lieu of script parameters
+export CMD_OPTS=<%= @vertx[:cmd_opts] %>
+
 # Add default JVM options here. You can also use JAVA_OPTS and VERTX_OPTS to pass JVM options to this script.
 # JVM_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=192m"
 
@@ -175,5 +178,5 @@ exec "$JAVACMD" \
     -Djava.util.logging.config.file="${VERTX_MODS}/${MOD}-logging.properties" \
     -Dvertx.home=$VERTX_HOME \
     -classpath "$CLASSPATH" \
-    org.vertx.java.platform.impl.cli.Starter runmod "$MOD" -conf "$MOD_CONF" 2>&1
+    org.vertx.java.platform.impl.cli.Starter runmod "$MOD" -conf "$MOD_CONF" "$CMD_OPTS"
 
