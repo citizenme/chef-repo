@@ -1,6 +1,6 @@
-[program:<%= @vertx[:mod] %>]
-command=<%= @vertx[:conf_dir] + "/" + @vertx[:mod] + ".run" %>
-process_name=<%= @vertx[:mod] %>
+[program:<%= @mod_conf['mod'] %>]
+command=<%= @vertx[:mods_dir] + "/" + @mod_conf['mod'] + ".run" %>
+process_name=<%= @mod_conf['mod'] %>
 autostart=true
 autorestart=true
 stopsignal=QUIT
