@@ -25,6 +25,13 @@ install_from_release(:vertx) do
   not_if{ ::File.exists?("#{node[:vertx][:install_dir]}/bin/vertx") }
 end
 
+directory node[:vertx][:pid_dir] do
+  owner node[:tos_sources][:user]
+  group node[:tos_sources][:group]
+  recursive true
+  action :create
+end
+
 directory node[:vertx][:log_dir] do
   owner node[:vertx][:user]
   group node[:vertx][:group]

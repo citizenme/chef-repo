@@ -9,18 +9,7 @@
 
 include_recipe 'git'
 
-daemon_user(:tos_sources) do
-  action        :create
-  create_group  true
-end
-
-directory node[:tos_sources][:pid_dir] do
-  owner node[:tos_sources][:user]
-  group node[:tos_sources][:group]
-  recursive true
-  action :create
-end
-
+# We need ssh key in here
 directory "#{node[:tos_sources][:pid_dir]}/.ssh" do
   owner node[:tos_sources][:user]
   group node[:tos_sources][:group]
@@ -48,7 +37,7 @@ cron "tosdr" do
   action :create
   minute "*/5"
   user node[:tos_sources][:user]
-  mailto "morten@citizenme.com"
+  mailto "service@citizenme.com"
   command "cd #{node[:tos_sources][:git_dir]}/tosdr.org ; /usr/bin/git checkout #{node[:tos_sources][:tosdr_branch]} ; /usr/bin/git pull"
 end
 
@@ -66,7 +55,7 @@ cron "justdeleteme" do
   action :create
   minute "*/5"
   user node[:tos_sources][:user]
-  mailto "morten@citizenme.com"
+  mailto "service@citizenme.com"
   home node[:tos_sources][:git_dir] + "/justdelete.me"
   command "cd #{node[:tos_sources][:git_dir]}/justdelete.me ; /usr/bin/git checkout #{node[:tos_sources][:tosdr_branch]} ; /usr/bin/git pull"
 end

@@ -22,7 +22,23 @@
 # == Users
 
 daemon_user(:cassandra) do
+  action        :create
   create_group  true
+end
+
+directory node[:cassandra][:pid_dir] do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  recursive true
+  action :create
+end
+
+# We need ssh key in here
+directory "#{node[:cassandra][:pid_dir]}/.ssh" do
+  owner node[:cassandra][:user]
+  group node[:cassandra][:group]
+  mode 00700
+  action :create
 end
 
 include_recipe 'install_from'

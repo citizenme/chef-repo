@@ -43,8 +43,8 @@ default[:cassandra][:data_dirs]         = ["/var/lib/cassandra/data"]
 
 default[:cassandra][:user]              = 'cassandra'
 default[:cassandra][:group]             = 'cassandra'
-default[:users][:cassandra][:uid]       = 2001
-default[:users][:cassandra][:gid]       = 2001
+default[:users ][:cassandra][:uid]       = 2001
+default[:groups][:cassandra][:gid]       = 2001
 
 default[:cassandra][:listen_addr]       = "localhost"
 default[:cassandra][:seeds]             = ["127.0.0.1"]

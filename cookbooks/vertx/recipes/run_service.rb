@@ -2,7 +2,7 @@
 node[:vertx][:mods].each do |mod|
 
 mod_conf = data_bag_item(:vertx, mod)[ node.chef_environment ]
-mod_name = mod_conf['mod']
+mod_name = mod_conf["mod"]
 
 template node[:vertx][:mods_dir] + "/" + mod_name + ".run" do
   source        "supervisor-vertx-run.erb"

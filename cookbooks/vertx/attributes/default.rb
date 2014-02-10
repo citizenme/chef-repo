@@ -8,8 +8,8 @@ default[:vertx][:log_dir] = '/var/log/vertx'
 
 default[:vertx][:user]              = 'vertx'
 default[:vertx][:group]             = 'vertx'
-default[:users][:vertx]             = 2003
-default[:groups][:vertx]            = 2003
+default[:users][:vertx][:uid]       = 2003
+default[:groups][:vertx][:gid]      = 2003
 default[:vertx][:pid_dir]           = '/home/vertx'
 
 default[:vertx][:releases_url]      = 'maven:http://build.cloud.citizenme.com/nexus/content/repositories/releases'
@@ -21,7 +21,7 @@ default[:vertx][:snapshots_url]     = 'maven:http://build.cloud.citizenme.com/ne
 # one for each environment
 # data_bag_item('vertx', node[:vertx][:mod_conf_name] ) [node.chef_environment] hash for environment specific configuration 
 
-#default[:vertx][:mods]     = ['test']
+#default[:vertx][:mods]     = nil
 default[:vertx][:supervisor_conf_dir] = '/etc/supervisor.d'
 
 # To enable JMX add the following:
