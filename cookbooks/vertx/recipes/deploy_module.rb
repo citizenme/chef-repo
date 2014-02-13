@@ -30,6 +30,17 @@ script "deploy_module" do
   EOH
 end
 
+script "pulldeps_module" do
+  interpreter "bash"
+  user node[:vertx][:user]
+  group node[:vertx][:group]
+  cwd node[:vertx][:home_dir]
+  environment("VERTX_MODS" => node[:vertx][:mods_dir], "VERTX_HOME" => node[:vertx][:home_dir], "MOD" => mod_name )
+  code <<-EOH
+    $VERTX_HOME/bin/vertx pulldeps "$MOD"
+  EOH
+end
+
 #open(File.join(node[:vertx][:mods_dir], mod_name + ".conf"),"w") do |f|
 #  f.write(mod_conf['config'].to_json)
 #end

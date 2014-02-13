@@ -60,6 +60,15 @@ cron "justdeleteme" do
   command "cd #{node[:tos_sources][:git_dir]}/justdelete.me ; /usr/bin/git checkout #{node[:tos_sources][:tosdr_branch]} ; /usr/bin/git pull"
 end
 
+# citizenme merged ToS-Load content
+git node[:tos_sources][:git_dir] + "/External-Content" do
+  repository node[:tos_sources][:citizenme_tosload_url]
+  reference node[:tos_sources][:citizenme_tosload_branch]
+  user  node[:tos_sources][:user]
+  group node[:tos_sources][:group]
+  action :checkout
+end
+
 # citizenme merged ToS content
 git node[:tos_sources][:git_dir] + "/Content" do
   repository node[:tos_sources][:citizenme_tos_url]
