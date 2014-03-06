@@ -53,3 +53,12 @@ template "#{node[:vertx][:conf_dir]}/repos.txt" do
   notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 
+template "#{node[:vertx][:conf_dir]}/cluster.xml" do
+  source        "cluster.xml.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :vertx => node[:vertx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+

@@ -25,7 +25,7 @@ java.util.logging.FileHandler.formatter=org.vertx.java.core.logging.impl.VertxLo
 java.util.logging.FileHandler.pattern=<%= @vertx[:log_dir] + "/" + @mod_conf['mod'] + ".log" %>
 
 .level=INFO
-org.vertx.level=INFO
-com.hazelcast.level=SEVERE
-io.netty.util.internal.PlatformDependent.level=SEVERE
+org.vertx.level=<%= @vertx[:logging][:level] %>
+com.hazelcast.level=<%= @vertx[:hazelcast][:logging][:level] %>
+io.netty.util.internal.PlatformDependent.level=<%= @vertx[:netty][:logging][:level] %>
 

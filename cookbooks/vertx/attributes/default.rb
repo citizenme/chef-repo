@@ -1,5 +1,5 @@
 
-default[:vertx][:version]     = '2.1M5'
+default[:vertx][:version]     = '2.1RC1'
 default[:vertx][:home_dir]    = '/usr/share/vertx'
 default[:vertx][:conf_dir]    = '/usr/share/vertx/conf'
 default[:vertx][:mods_dir]    = '/usr/share/vertx/mods'
@@ -26,3 +26,21 @@ default[:vertx][:supervisor_conf_dir] = '/etc/supervisor.d'
 
 # To enable JMX add the following:
 # "-Dcom.sun.management.jmxremote -Dvertx.management.jmx=true -Dhazelcast.jmx=true"
+
+# multicast|tcp-ip|aws
+default[:vertx][:network] = 'multicast'
+default[:vertx][:multicast][:group] = '224.2.2.3'
+default[:vertx][:multicast][:port]  = '54327'
+# Array of IP addresses
+default[:vertx][:tcpip][:addresses] = [ node[:ipaddress] ]
+default[:vertx][:aws][:accesskey] = nil
+default[:vertx][:aws][:secretkey] = nil
+default[:vertx][:aws][:region] = nil
+default[:vertx][:aws][:tagkey] = nil
+default[:vertx][:aws][:tagvalue] = nil
+default[:vertx][:interface] = node[:ipaddress]
+
+default[:vertx][:logging][:level] = 'INFO'
+default[:vertx][:hazelcast][:logging][:level] = 'INFO'
+default[:vertx][:netty][:logging][:level] = 'SEVERE'
+
