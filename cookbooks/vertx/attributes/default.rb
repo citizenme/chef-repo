@@ -44,3 +44,5 @@ default[:vertx][:logging][:level] = 'INFO'
 default[:vertx][:hazelcast][:logging][:level] = 'INFO'
 default[:vertx][:netty][:logging][:level] = 'SEVERE'
 
+default[:vertx][:hazelcast][:appcluster] = false
+

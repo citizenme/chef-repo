@@ -41,6 +41,18 @@ script "pulldeps_module" do
   EOH
 end
 
+
+if node[:vertx][:hazelcast][:appcluster] then 
+template node[:vertx][:mods_dir] + "/" + mod_name + "/app-cluster.xml" do
+  source        "app-cluster.xml.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :vertx => node[:vertx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+end
+
 #open(File.join(node[:vertx][:mods_dir], mod_name + ".conf"),"w") do |f|
 #  f.write(mod_conf['config'].to_json)
 #end
