@@ -1,9 +1,5 @@
-#
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Cookbook Name:: java
-# Recipe:: default
-#
-# Copyright 2008-2011, Opscode, Inc.
+# Recipe:: purge_packages
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-include_recipe "java::set_attributes_from_version"
-include_recipe "java::#{node['java']['install_flavor']}"
+%w[sun-java6-jdk sun-java6-bin sun-java6-jre].each do |pkg|
+  package pkg do
+    action :purge
+  end
+end
