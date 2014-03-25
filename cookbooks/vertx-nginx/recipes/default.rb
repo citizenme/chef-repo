@@ -24,3 +24,25 @@ begin
 rescue Chef::Exceptions::ResourceNotFound
   Chef::Log.warn "could not find template to override!"
 end
+
+
+cert_conf = data_bag_item("vertx-nginx", node['nginx']['server_name'].gsub(".", "_") )
+
+template "/etc/ssl/certs/" + node['nginx']['server_name'] + ".pem" do
+  source        "certificate.erb"
+  owner         node['nginx']['user']
+  group         node['nginx']['group']
+  mode          "0600"
+  variables     :nginx => node[:nginx], :certificate => cert_conf["certificate"]
+  notifies      :restart, "service[nginx]"
+end
+
+template "/etc/ssl/private/" + node['nginx']['server_name'] + ".key" do
+  source        "key.erb"
+  owner         node['nginx']['user']
+  group         node['nginx']['group']
+  mode          "0600"
+  variables     :nginx => node[:nginx], :key => cert_conf["key"]
+  notifies      :restart, "service[nginx]"
+end
+

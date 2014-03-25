@@ -31,7 +31,7 @@ when 'rhel', 'fedora'
 when 'debian'
   include_recipe 'apt::default'
 
-  apt_repository 'nginx' do
+  apt_repository 'nginx-full' do
     uri          node['nginx']['upstream_repository']
     distribution node['lsb']['codename']
     components   %w[nginx]

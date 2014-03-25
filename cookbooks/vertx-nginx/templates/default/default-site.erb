@@ -1,6 +1,11 @@
 server {
   listen   80;
-  server_name  <%= node['hostname'] %>;
+  listen   443 ssl;
+  ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers         ECDH+AESGCM:ECDH+AES256:ECDH+AES128:aNULL:!MD5:!DSS;
+  server_name         <%= node['nginx']['server_name'] %>;
+  ssl_certificate     <%= "/etc/ssl/certs/" + node['nginx']['server_name'] + ".pem" %>;
+  ssl_certificate_key <%= "/etc/ssl/private/" + node['nginx']['server_name'] + ".key" %>;
 
   access_log  <%= node['nginx']['log_dir'] %>/localhost.access.log;
 
