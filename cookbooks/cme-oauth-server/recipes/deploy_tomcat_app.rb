@@ -12,7 +12,7 @@ node[:tomcat][:mods].each do |mod_bag|
 
 mod_conf = data_bag_item("tomcat", mod_bag)[ node.chef_environment ]
 
-mod_name = mod_conf["group_id"] + "_" + mod_conf["artifact_id"]
+mod_name = mod_conf["context_name"]
 
 prop_file_name = node[:tomcat][:app_conf_dir] + "/" + mod_name + ".properties"
 context_file_name = node[:tomcat][:context_dir] + "/" + mod_name + ".xml"
