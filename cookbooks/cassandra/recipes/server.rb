@@ -65,10 +65,7 @@ template "#{node[:cassandra][:conf_dir]}/cassandra.yaml" do
   owner         node[:cassandra][:user]
   group         node[:cassandra][:group]
   mode          "0640"
-  variables({
-                :cassandra => node[:cassandra],
-                :seeds     => seed_ips
-    })
+  variables     :cassandra => node[:cassandra], :seeds     => seed_ips
   notifies      :restart, "service[cassandra]", :delayed if startable?(node[:cassandra])
 end
 
