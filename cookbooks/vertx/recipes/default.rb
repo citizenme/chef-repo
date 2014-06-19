@@ -26,8 +26,8 @@ install_from_release(:vertx) do
 end
 
 directory node[:vertx][:pid_dir] do
-  owner node[:tos_sources][:user]
-  group node[:tos_sources][:group]
+  owner node[:vertx][:user]
+  group node[:vertx][:group]
   recursive true
   action :create
 end
@@ -39,6 +39,12 @@ directory node[:vertx][:log_dir] do
 end
 
 directory node[:vertx][:mods_dir] do
+  owner node[:vertx][:user]
+  group node[:vertx][:group]
+  action :create
+end
+
+directory node[:vertx][:sys_mods_dir] do
   owner node[:vertx][:user]
   group node[:vertx][:group]
   action :create

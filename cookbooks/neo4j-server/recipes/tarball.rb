@@ -52,7 +52,7 @@ tmp_spatial = File.join(td, "neo4j-spatial-#{node.neo4j.server.plugins.spatial.v
 remote_file(tmp) do
   source node.neo4j.server.tarball.url
 
-  not_if "which neo4j"
+  #not_if "which neo4j"
 end
 
 if node.neo4j.server.plugins.spatial.enabled

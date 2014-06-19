@@ -1,8 +1,9 @@
 
-default[:vertx][:version]     = '2.1RC1'
+default[:vertx][:version]     = '2.1.1'
 default[:vertx][:home_dir]    = '/usr/share/vertx'
 default[:vertx][:conf_dir]    = '/usr/share/vertx/conf'
 default[:vertx][:mods_dir]    = '/usr/share/vertx/mods'
+default[:vertx][:sys_mods_dir]= '/usr/share/vertx/sys-mods'
 default[:vertx][:release_url] = 'http://dl.bintray.com/vertx/downloads/vert.x-:version:.tar.gz'
 default[:vertx][:log_dir] = '/var/log/vertx'
 
