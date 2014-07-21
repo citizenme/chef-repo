@@ -6,5 +6,7 @@ description      'Installs/Configures pdx-server'
 long_description 'Installs/Configures pdx-server'
 version          '0.1.0'
 
-depends 'neo4j-server'
+# depends 'neo4j-server'
+depends 'metachef'
+depends 'vertx'
 

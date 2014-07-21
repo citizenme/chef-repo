@@ -17,4 +17,11 @@
 # limitations under the License.
 #
 
+include_recipe 'vertx'
+begin
+#  r = resources(:template => "#{node['nginx']['dir']}/sites-available/default")
+#  r.cookbook "vertx-nginx"
+#rescue Chef::Exceptions::ResourceNotFound
+#  Chef::Log.warn "could not find template to override!"
+end
 
