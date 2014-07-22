@@ -8,4 +8,4 @@ version          '0.1.0'
 
 depends          "java"
 depends          "supervisor"
-
+depends          "install_from"

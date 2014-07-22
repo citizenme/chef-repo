@@ -17,11 +17,44 @@
 # limitations under the License.
 #
 
+include_recipe 'supervisor'
+begin
+end
+
 include_recipe 'vertx'
 begin
 #  r = resources(:template => "#{node['nginx']['dir']}/sites-available/default")
 #  r.cookbook "vertx-nginx"
 #rescue Chef::Exceptions::ResourceNotFound
 #  Chef::Log.warn "could not find template to override!"
+end
+
+include_recipe 'vertx::deploy_module'
+begin
+end
+
+mod_bag = ''
+node[:vertx][:mods].each do |m|
+  if m.start_with?('citizenme_pdxuser')
+    mod_bag = m
+end
+
+if ! mod_bag.empty?
+
+  mod_conf = data_bag_item("vertx", mod_bag)[ node.chef_environment ]
+  mod_name = mod_conf["mod"]
+
+  template "#{node[:vertx][:mods_dir]}/" + mod_name + "/" + neo4j.properties do
+    source        "neo4j.properties.erb"
+    owner         node[:vertx][:user]
+    group         node[:vertx][:group]
+    mode          "0644"
+    variables     :vertx => node[:vertx]
+    notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+  end
+end
+
+include_recipe 'vertx::run_service'
+begin
 end
 
