@@ -10,4 +10,5 @@ version          '0.1.0'
 depends 'supervisor'
 depends 'metachef'
 depends 'vertx'
+depends 'vertx-nginx'
 

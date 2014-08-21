@@ -42,7 +42,7 @@ script "pulldeps_module" do
 end
 
 
-if node[:vertx][:hazelcast][:appcluster] then 
+if node[:vertx][:hazelcast][:appcluster] == true then 
 template node[:vertx][:mods_dir] + "/" + mod_name + "/app-cluster.xml" do
   source        "app-cluster.xml.erb"
   owner         node[:vertx][:user]

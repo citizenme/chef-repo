@@ -29,32 +29,56 @@ begin
 #  Chef::Log.warn "could not find template to override!"
 end
 
+# Create directory for database - owned by vertx user running database and service
+directory node[:pdx][:db_dir] do
+  owner node[:vertx][:user]
+  group node[:vertx][:group]
+  recursive true
+  action :create
+end
+
 include_recipe 'vertx::deploy_module'
 begin
 end
 
-mod_bag = ''
-node[:vertx][:mods].each do |m|
-  if m.start_with?('citizenme_pdxuser')
-    mod_bag = m
-end
-
-if ! mod_bag.empty?
-
-  mod_conf = data_bag_item("vertx", mod_bag)[ node.chef_environment ]
-  mod_name = mod_conf["mod"]
-
-  template "#{node[:vertx][:mods_dir]}/" + mod_name + "/" + neo4j.properties do
-    source        "neo4j.properties.erb"
-    owner         node[:vertx][:user]
-    group         node[:vertx][:group]
-    mode          "0644"
-    variables     :vertx => node[:vertx]
-    notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
-  end
+template "#{node[:pdx][:db_dir]}/neo4j.properties" do
+  source        "neo4j.properties.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :vertx => node[:vertx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 
 include_recipe 'vertx::run_service'
 begin
+end
+
+include_recipe 'nginx'
+begin
+  r = resources(:template => "#{node['nginx']['dir']}/sites-available/default")
+  r.cookbook "pdx-server"
+rescue Chef::Exceptions::ResourceNotFound
+  Chef::Log.warn "could not find template to override!"
+end
+
+cert_conf = data_bag_item("vertx-nginx", node['nginx']['server_name'].gsub(".", "_") )
+
+template "/etc/ssl/certs/" + node['nginx']['server_name'] + ".pem" do
+  source        "certificate.erb"
+  owner         node['nginx']['user']
+  group         node['nginx']['group']
+  mode          "0600"
+  variables     :nginx => node[:nginx], :certificate => cert_conf["certificate"]
+  notifies      :restart, "service[nginx]"
+end
+
+template "/etc/ssl/private/" + node['nginx']['server_name'] + ".key" do
+  source        "key.erb"
+  owner         node['nginx']['user']
+  group         node['nginx']['group']
+  mode          "0600"
+  variables     :nginx => node[:nginx], :key => cert_conf["key"]
+  notifies      :restart, "service[nginx]"
 end
 

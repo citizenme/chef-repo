@@ -68,3 +68,7 @@ template "#{node[:vertx][:conf_dir]}/cluster.xml" do
   notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 
+remote_file "#{node[:vertx][:lib_dir]}/hazelcast-cloud-#{node[:vertx][:hazelcast][:version]}.jar" do
+  source "#{node[:vertx][:hazelcast][:cloud_url]}"
+end
+

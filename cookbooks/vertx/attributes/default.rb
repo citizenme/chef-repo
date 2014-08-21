@@ -1,9 +1,10 @@
 
-default[:vertx][:version]     = '2.1.1'
+default[:vertx][:version]     = '2.1.2'
 default[:vertx][:home_dir]    = '/usr/share/vertx'
 default[:vertx][:conf_dir]    = '/usr/share/vertx/conf'
 default[:vertx][:mods_dir]    = '/usr/share/vertx/mods'
 default[:vertx][:sys_mods_dir]= '/usr/share/vertx/sys-mods'
+default[:vertx][:lib_dir]     = '/usr/share/vertx/lib'
 default[:vertx][:release_url] = 'http://dl.bintray.com/vertx/downloads/vert.x-:version:.tar.gz'
 default[:vertx][:log_dir] = '/var/log/vertx'
 
@@ -12,6 +13,12 @@ default[:vertx][:group]             = 'vertx'
 default[:users][:vertx][:uid]       = 2003
 default[:groups][:vertx][:gid]      = 2003
 default[:vertx][:pid_dir]           = '/home/vertx'
+
+# Hazelcast - remember to update version with vert.x version
+default[:vertx][:hazelcast][:version] = '3.2.3'
+default[:vertx][:hazelcast][:cloud_url] = 'http://central.maven.org/maven2/com/hazelcast/hazelcast-cloud/' + node[:vertx][:hazelcast][:version] + '/hazelcast-cloud-' + node[:vertx][:hazelcast][:version] + '.jar'
+default[:vertx][:hazelcast][:group][:name]      = 'replacemename'
+default[:vertx][:hazelcast][:group][:password]  = 'replacemepassword'
 
 default[:vertx][:releases_url]      = 'maven:http://build.cloud.citizenme.com/nexus/content/repositories/releases'
 default[:vertx][:snapshots_url]     = 'maven:http://build.cloud.citizenme.com/nexus/content/repositories/snapshots'
@@ -45,5 +52,8 @@ default[:vertx][:logging][:level] = 'INFO'
 default[:vertx][:hazelcast][:logging][:level] = 'INFO'
 default[:vertx][:netty][:logging][:level] = 'SEVERE'
 
+# Hazelcast application cluster - i.e. cluster used in app - NOT vert.x cluster
 default[:vertx][:hazelcast][:appcluster] = false
+default[:vertx][:hazelcast][:appgroup][:name]      = 'appreplacemename'
+default[:vertx][:hazelcast][:appgroup][:password]  = 'appreplacemepassword'
 
