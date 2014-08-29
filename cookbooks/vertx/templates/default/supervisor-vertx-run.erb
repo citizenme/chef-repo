@@ -21,7 +21,7 @@ export MOD_CONF=<%= File.join(@vertx[:mods_dir], @mod_conf['mod'] + ".conf") %>
 JVM_OPTS="<%= @mod_conf['jvm_opts'] %>"
 
 # vertx command options in lieu of script parameters
-export CMD_OPTS=<%= @mod_conf['cmd_opts'] %>
+export CMD_OPTS="<%= @mod_conf['cmd_opts'] %>"
 
 # Add default JVM options here. You can also use JAVA_OPTS and VERTX_OPTS to pass JVM options to this script.
 # JVM_OPTS="-Xms512m -Xmx512m -XX:MaxPermSize=192m"

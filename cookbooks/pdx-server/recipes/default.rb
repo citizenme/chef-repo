@@ -62,7 +62,7 @@ rescue Chef::Exceptions::ResourceNotFound
   Chef::Log.warn "could not find template to override!"
 end
 
-cert_conf = data_bag_item("vertx-nginx", node['nginx']['server_name'].gsub(".", "_") )
+cert_conf = data_bag_item("pdx-server", node['nginx']['server_name'].gsub(".", "_") )
 
 template "/etc/ssl/certs/" + node['nginx']['server_name'] + ".pem" do
   source        "certificate.erb"

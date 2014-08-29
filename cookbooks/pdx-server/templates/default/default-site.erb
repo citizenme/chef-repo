@@ -13,62 +13,9 @@ server {
 
   access_log  <%= node['nginx']['log_dir'] %>/cme.access.log cme;
 
-  location /tosload/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /profile/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /httpproxy/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /tos/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /user/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /secure/ {
-    proxy_pass  http://localhost:10080;
-    proxy_redirect off;
-    proxy_buffering off;
-    proxy_set_header        Host            $host;
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-  }
-
-  location /webapp/ {
-    proxy_pass  http://localhost:10180;
+  # neo4j browser web app
+  location / {
+    proxy_pass  http://localhost:7474/;
     proxy_redirect off;
     proxy_buffering off;
     proxy_set_header        Host            $host;
