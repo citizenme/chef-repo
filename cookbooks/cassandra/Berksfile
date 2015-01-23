@@ -1,0 +1,11 @@
+source "https://supermarket.getchef.com"
+
+metadata
+
+cookbook	"java"
+cookbook	"apt"
+cookbook	"runit"
+cookbook	"volumes"
+cookbook	"silverware"
+cookbook	"install_from"
+

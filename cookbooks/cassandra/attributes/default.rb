@@ -39,7 +39,7 @@ default[:cassandra][:lib_dir]           = '/var/lib/cassandra'
 default[:cassandra][:pid_dir]           = '/var/run/cassandra'
 default[:cassandra][:commitlog_dir]     = '/var/lib/cassandra/commitlog'
 default[:cassandra][:saved_caches_dir]  = '/var/lib/cassandra/saved_caches'
-default[:cassandra][:data_dirs]         = ["/var/lib/cassandra/data"]
+default[:cassandra][:data_dirs]         = [ '/var/lib/cassandra/data' ]
 
 default[:cassandra][:user]              = 'cassandra'
 default[:cassandra][:group]             = 'cassandra'

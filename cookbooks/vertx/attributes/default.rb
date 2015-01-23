@@ -1,5 +1,5 @@
 
-default[:vertx][:version]     = '2.1.2'
+default[:vertx][:version]     = '2.1.5'
 default[:vertx][:home_dir]    = '/usr/share/vertx'
 default[:vertx][:conf_dir]    = '/usr/share/vertx/conf'
 default[:vertx][:mods_dir]    = '/usr/share/vertx/mods'

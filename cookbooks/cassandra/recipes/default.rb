@@ -60,7 +60,8 @@ directory node[:cassandra][:pid_dir] do
   action :create
 end
 
-@node[:cassandra][:data_dirs].each do |data_dir|
+#@node[:cassandra][:data_dirs].each do |data_dir|
+node[:cassandra][:data_dirs].each do |data_dir|
   directory data_dir do
     owner node[:cassandra][:user]
     group node[:cassandra][:group]
