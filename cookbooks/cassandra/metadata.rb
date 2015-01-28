@@ -10,7 +10,6 @@ description      "Cassandra: a massively scalable high-performance distributed s
 depends          "java"
 depends          "apt"
 depends          "runit"
-depends          "volumes"
 depends          "silverware"
 depends          "install_from"
 
@@ -23,7 +22,7 @@ recipe           "cassandra::default",                 "Base configuration for c
 recipe           "cassandra::install_from_package",    "Install From Package"
 recipe           "cassandra::install_from_release",    "Install From Release"
 recipe           "cassandra::jna_support",             "Jna Support"
-recipe           "cassandra::mx4j",                    "Mx4j"
+recipe           "cassandra::mx4j_support",            "Mx4j Support"
 recipe           "cassandra::server",                  "Server"
 
 %w[ debian ubuntu ].each do |os|

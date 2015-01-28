@@ -21,7 +21,7 @@ Modified to use `silverware` discovery and options preparation.
 * `install_from_package`     - Install From Package
 * `install_from_release`     - Install From Release
 * `jna_support`              - Jna Support
-* `mx4j`                     - Mx4j
+* `mx4j_support`             - Mx4j Support
 * `ruby_client`              - support gems for cassandra (incl. fauna/cassandra and apache/avro)
 * `server`                   - Server
 
@@ -33,9 +33,7 @@ Cookbook dependencies:
 * java
 * apt
 * runit
-* thrift
 * iptables
-* volumes
 * silverware
 * install_from
 
@@ -120,12 +118,8 @@ Cookbook dependencies:
 * `[:cassandra][:pid_dir]`            -  (default: "/var/run/cassandra")
 * `[:cassandra][:group]`              - cassandra (default: "cassandra")
   - The group that cassandra belongs to
-* `[:cassandra][:version]`            -  (default: "0.7.10")
+* `[:cassandra][:version]`            -  (default: "2.1.2")
   - install_from_release
-* `[:cassandra][:mx4j_version]`       -  (default: "3.0.2")
-  - MX4J Version
-* `[:cassandra][:mx4j_release_url]`   -  (default: "http://downloads.sourceforge.net/project/mx4j/MX4J%20Binary/x.x/mx4j-x.x.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmx4j%2Ffiles%2F&ts=1303407638&use_mirror=iweb")
-  - MX4J location (at least as of Version 3.0.2)
 * `[:users][:cassandra][:uid]`        -  (default: "330")
 * `[:users][:cassandra][:gid]`        -  (default: "330")
 * `[:tuning][:ulimit][:cassandra]`    - 

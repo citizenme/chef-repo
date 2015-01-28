@@ -22,18 +22,10 @@
 # == Recipes
 
 include_recipe "silverware"
-include_recipe "java" ; complain_if_not_sun_java(:cassandra)
+include_recipe "java"
 
 
-# == Volumes
-
-#include_recipe "volumes"
-
-#standard_dirs('cassandra') do
-#  directories   [:conf_dir, :log_dir, :lib_dir, :pid_dir, :data_dirs, :commitlog_dir, :saved_caches_dir]
-#  user          node[:cassandra][:user]
-#  group         node[:cassandra][:group]
-#end
+# == Directories
 
 directory node[:cassandra][:conf_dir] do
   owner node[:cassandra][:user]

@@ -29,17 +29,22 @@
 
 include_recipe 'install_from'
 
-install_from_release(:mx4j) do
-  release_url   node[:cassandra][:mx4j_release_url]
-  home_dir      "/usr/local/share/mx4j"
-  version       node[:cassandra][:mx4j_version]
-  action        [:download, :unpack]
-end
+# XXX: Only supports Ubuntu x86_64
+if node[:platform].downcase == "ubuntu" && node[:kernel][:machine] == "x86_64"
 
-link "#{node[:cassandra][:home_dir]}/lib/mx4j-tools.jar" do
-  to            "/usr/local/share/mx4j/lib/mx4j-tools.jar"
+  package "libmx4j-java" do
+    action :install
+  end
+
+  # Link into our cassandra directory
+  link "#{node[:cassandra][:home_dir]}/lib/mx4j-tools.jar" do
+    to          "/usr/share/java/mx4j-tools.jar"
     notifies    :restart, "service[cassandra]", :delayed if startable?(node[:cassandra])
+  end
+else
+  Chef::Log.warn("MX4J cookbook not supported on this platform")
 end
 
 # FIXME: How to conditionally set this after the jarfile link has been  put in place?
-node[:cassandra][:enable_mx4j] = true
+node.default[:cassandra][:enable_mx4j] = true
+

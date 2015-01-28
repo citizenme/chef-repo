@@ -5,7 +5,8 @@ metadata
 cookbook	"java"
 cookbook	"apt"
 cookbook	"runit"
-cookbook	"volumes"
-cookbook	"silverware"
+cookbook        "silverware", path: '../silverware'
+# Not working because there's no name attribute in this cookbook:
+#cookbook        "silverware", git: 'git@github.com:infochimps-labs/ironfan-pantry.git'
 cookbook	"install_from"
 
