@@ -1,3 +1,6 @@
 source "https://supermarket.getchef.com"
 
 metadata
+
+cookbook 'nginx',     '~> 2.4'
+cookbook 'tomcat',    '~> 0.17.3'
