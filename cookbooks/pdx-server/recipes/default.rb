@@ -82,3 +82,15 @@ template "/etc/ssl/private/" + node['nginx']['server_name'] + ".key" do
   notifies      :restart, "service[nginx]"
 end
 
+# Install neo4j distribution for neo4j shell
+include_recipe 'install_from'
+
+install_from_release(:neo4j) do
+  release_url   node[:neo4j][:release_url]
+  home_dir      node[:neo4j][:home_dir]
+  version       node[:neo4j][:version]
+  action        [:install]
+  has_binaries  [ 'bin/neo4j-shell' ]
+  not_if{ ::File.exists?("#{node[:pdx][:install_dir]}/bin/neo4j-shell") }
+end
+
