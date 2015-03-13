@@ -4,7 +4,7 @@
 ruby_block 'restart_tomcat7' do
   action :nothing
   block do
-    resources('service[tomcat7]').run_action(:restart)
+#    resources('service[tomcat7]').run_action(:restart)
   end
 end
 
