@@ -37,6 +37,14 @@ template node[:tos_sources][:pid_dir] + "/.ssh/id_rsa.pub" do
   variables     :ssh_public_key => ssh_conf["ssh_public_key"]
 end
 
+template node[:tos_sources][:pid_dir] + "/.ssh/known_hosts" do
+  source        "known_hosts.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :known_hosts => ssh_conf["known_hosts"]
+end
+
 directory node[:tos_sources][:git_dir] do
   owner node[:tos_sources][:user]
   group node[:tos_sources][:group]

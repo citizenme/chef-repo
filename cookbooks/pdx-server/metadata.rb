@@ -10,4 +10,5 @@ depends 'supervisor'
 depends 'metachef'
 depends 'vertx'
 depends 'vertx-nginx'
+depends 'aws'
 

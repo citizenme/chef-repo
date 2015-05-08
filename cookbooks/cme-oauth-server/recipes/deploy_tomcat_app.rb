@@ -1,13 +1,4 @@
 
-# This is a hack from: http://stackoverflow.com/questions/27934224/how-to-restart-tomcat-after-deploying-war-file-with-chef
-# because a service[tomcat] restart notification no longer is possible (see later in this file)
-ruby_block 'restart_tomcat7' do
-  action :nothing
-  block do
-#    resources('service[tomcat7]').run_action(:restart)
-  end
-end
-
 # Where to dump the <app>.properties file
 directory node[:tomcat][:app_conf_dir] do
   owner node[:tomcat][:user]
@@ -33,7 +24,7 @@ template prop_file_name do
   group         node[:tomcat][:group]
   mode          "0644"
   variables     :tomcat => node[:tomcat], :mod_conf => mod_conf
-  notifies      :restart, "ruby_block[restart_tomcat7]"
+#  notifies      :restart, "ruby_block[restart_tomcat7]"
 #  notifies      :restart, "service[tomcat7]"
 #  notifies      :restart, "service[tomcat#{node['tomcat']['base_version']}]"
 end
@@ -45,7 +36,7 @@ template context_file_name do
   group         node[:tomcat][:group]
   mode          "0644"
   variables     :tomcat => node[:tomcat], :prop_file_name => prop_file_name
-  notifies      :restart, "ruby_block[restart_tomcat7]"
+#  notifies      :restart, "ruby_block[restart_tomcat7]"
 #  notifies      :restart, "service[tomcat7]"
 #  notifies      :restart, "service[tomcat#{node['tomcat']['base_version']}]"
 end

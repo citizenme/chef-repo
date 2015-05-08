@@ -1,3 +1,10 @@
+<%- if @pdx[:neo4j_db_mode] == "HA" -%>
+# Clustering configuration
+ha.cluster_server=<%= node[:ipaddress] + ":" + @pdx[:neo4j_cluster_port] %>
+ha.server_id=<%= @pdx[:neo4j_ha_server_id] %>
+ha.initial_hosts=<%= @pdx[:neo4j_ha_initial_hosts] %>
+<%- end -%>
+
 # Default values for the low-level graph engine
 #neostore.nodestore.db.mapped_memory=25M
 #neostore.relationshipstore.db.mapped_memory=50M

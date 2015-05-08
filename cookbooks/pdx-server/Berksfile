@@ -6,4 +6,4 @@ cookbook 'supervisor'
 cookbook 'metachef'
 cookbook 'vertx', path: '../vertx'
 cookbook 'vertx-nginx', path: '../vertx-nginx'
-
+cookbook 'aws'

@@ -16,6 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+# Various tried-and-failed stuff to play with
+#include Opscode::Aws::Ec2
+#::Chef::Recipe.send(:include, Opscode::Aws::Ec2)
+#chef_gem 'aws-sdk'
 
 include_recipe 'supervisor'
 begin
@@ -23,14 +27,45 @@ end
 
 include_recipe 'vertx'
 begin
-#  r = resources(:template => "#{node['nginx']['dir']}/sites-available/default")
-#  r.cookbook "vertx-nginx"
-#rescue Chef::Exceptions::ResourceNotFound
-#  Chef::Log.warn "could not find template to override!"
+end
+
+if node[:pdx][:cluster_type] == "AWS"
+
+  include_recipe 'aws'
+  begin
+  end
+
+  # We require after ensuring that the aws-sdk gem is installed with aws recipe above
+  require 'aws-sdk'
+
+  ec2 = Aws::EC2::Client.new(region: node[:pdx][:aws_region] )
+
+  instance_ids = Array.new
+
+  # Find all registered cluster nodes
+  ec2.describe_tags( filters: [ { name: 'resource-type', values: [ "instance" ] }, { name: 'key', values: [ node[:pdx][:aws_cluster_tag_name] ] }, { name: 'value', values: [ node[:pdx][:aws_cluster_tag_value] ] } ] )[:tags].map do |tag|
+    instance_ids << tag[:resource_id]
+  end
+
+  Chef::Log.warn("instance_ids: " + instance_ids.to_s )
+
+  # Get private IP addresses for registered cluster nodes
+  ha_initial_hosts = Array.new
+  ec2.describe_instances( instance_ids: instance_ids )[:reservations].map do |reservation|
+    reservation[:instances].map do |instance|
+      ha_initial_hosts << instance.private_ip_address + ":" + node[:pdx][:neo4j_cluster_port]
+    end
+  end
+
+  if node[:pdx][:neo4j_ha_initial_hosts].nil?
+    node.default[:pdx][:neo4j_ha_initial_hosts] = ha_initial_hosts * ","
+  end
+
+  Chef::Log.warn("node[:pdx][:neo4j_ha_initial_hosts] : " + node[:pdx][:neo4j_ha_initial_hosts] )
 end
 
 # Create directory for database - owned by vertx user running database and service
-directory node[:pdx][:db_dir] do
+directory node[:pdx][:neo4j_db_dir] do
   owner node[:vertx][:user]
   group node[:vertx][:group]
   recursive true
@@ -41,12 +76,30 @@ include_recipe 'vertx::deploy_module'
 begin
 end
 
-template "#{node[:pdx][:db_dir]}/neo4j.properties" do
+template node[:pdx][:neo4j_properties] do
   source        "neo4j.properties.erb"
   owner         node[:vertx][:user]
   group         node[:vertx][:group]
   mode          "0644"
-  variables     :vertx => node[:vertx]
+  variables     :pdx => node[:pdx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+
+template node[:pdx][:neo4j_server_properties] do
+  source        "neo4j-server.properties.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :pdx => node[:pdx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+
+template node[:pdx][:neo4j_http_log_config] do
+  source        "neo4j-http-logging.xml.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :pdx => node[:pdx]
   notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 
@@ -86,9 +139,9 @@ end
 include_recipe 'install_from'
 
 install_from_release(:neo4j) do
-  release_url   node[:neo4j][:release_url]
-  home_dir      node[:neo4j][:home_dir]
-  version       node[:neo4j][:version]
+  release_url   node[:pdx][:neo4j_release_url]
+  home_dir      node[:pdx][:neo4j_home_dir]
+  version       node[:pdx][:neo4j_version]
   action        [:install]
   has_binaries  [ 'bin/neo4j-shell' ]
   not_if{ ::File.exists?("#{node[:pdx][:install_dir]}/bin/neo4j-shell") }
