@@ -1,0 +1,7 @@
+name             'cmeaws'
+maintainer       'citizenme'
+maintainer_email 'info@citizenme.com'
+license          'Apache 2.0'
+description      'Installs/Configures cmeaws'
+long_description 'Installs/Configures cmeaws'
+version          '0.1.0'
