@@ -34,7 +34,8 @@ log_group_name = <%= @cmeaws[:log_group_name] %>
 
 <%- if @cmeaws[:log_type] == 'api' %>
 [/var/log/vertx/com.citizenme~http-auth-proxy.log]
-datetime_format = %Y-%m-%dT%H:%M:%S
+datetime_format = %Y-%m-%d %H:%M:%S.%f
+multi_line_start_pattern = {datetime_format}
 file = /var/log/vertx/com.citizenme~http-auth-proxy*.log
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/vertx/com.citizenme~http-auth-proxy.log
@@ -42,7 +43,8 @@ initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 
 [/var/log/vertx/com.citizenme~ToS.log]
-datetime_format = %Y-%m-%dT%H:%M:%S
+datetime_format = %Y-%m-%d %H:%M:%S.%f
+multi_line_start_pattern = {datetime_format}
 file = /var/log/vertx/com.citizenme~ToS*.log
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/vertx/com.citizenme~ToS.log
@@ -50,7 +52,8 @@ initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 
 [/var/log/vertx/com.citizenme~User.log]
-datetime_format = %Y-%m-%dT%H:%M:%S
+datetime_format = %Y-%m-%d %H:%M:%S.%f
+multi_line_start_pattern = {datetime_format}
 file = /var/log/vertx/com.citizenme~User*.log
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/vertx/com.citizenme~User.log
@@ -58,7 +61,8 @@ initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 
 [/var/log/cassandra/current]
-datetime_format = %Y-%m-%dT%H:%M:%S
+datetime_format = %Y-%m-%d_%H:%M:%S.%f
+multi_line_start_pattern = {datetime_format}
 file = /var/log/cassandra/current
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/cassandra/current
@@ -66,7 +70,8 @@ initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 
 [/var/log/tomcat7/catalina.out]
-datetime_format = %Y-%m-%d %H:%M:%S
+datetime_format = %b %d, %Y %I:%M:%S %p
+multi_line_start_pattern = {datetime_format}
 file = /var/log/tomcat7/catalina.out
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/tomcat7/catalina.out
@@ -82,16 +87,19 @@ initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 
 [/var/log/nginx/error.log]
-datetime_format = %Y-%m-%d %H:%M:%S
+datetime_format = %Y/%m/%d %H:%M:%S
+multi_line_start_pattern = {datetime_format}
 file = /var/log/nginx/error.log
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/nginx/error.log
 initial_position = end_of_file
 log_group_name = <%= @cmeaws[:log_group_name] %>
 <%- end -%>
+
 <%- if @cmeaws[:log_type] == 'pdx' %>
 [/var/log/vertx/com.citizenme~pdxuser.log]
-datetime_format = %Y-%m-%dT%H:%M:%S
+datetime_format = %Y-%m-%dT%H:%M:%S.%f
+multi_line_start_pattern = {datetime_format}
 file = /var/log/vertx/com.citizenme~pdxuser*.log
 buffer_duration = 5000
 log_stream_name = <%= @cmeaws[:log_stream_prefix] %>/var/log/vertx/com.citizenme~pdxuser.log
