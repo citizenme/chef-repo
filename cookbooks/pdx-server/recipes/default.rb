@@ -135,15 +135,54 @@ template "/etc/ssl/private/" + node['nginx']['server_name'] + ".key" do
   notifies      :restart, "service[nginx]"
 end
 
+# The Neo4j guys are really driving me nuts with their almost "daily" distribution server changes!!!
+# Some of them not working with either install_from or ark - sigh...
+# ----------------
 # Install neo4j distribution for neo4j shell
-include_recipe 'install_from'
+#include_recipe 'install_from'
+#install_from_release(:neo4j) do
+#  release_url   node[:pdx][:neo4j_release_url]
+#  home_dir      node[:pdx][:neo4j_home_dir]
+#  version       node[:pdx][:neo4j_version]
+#  action        [:install]
+#  has_binaries  [ 'bin/neo4j-shell' ]
+#  not_if{ ::File.exists?("#{node[:pdx][:install_dir]}/bin/neo4j-shell") }
+#end
 
-install_from_release(:neo4j) do
-  release_url   node[:pdx][:neo4j_release_url]
-  home_dir      node[:pdx][:neo4j_home_dir]
-  version       node[:pdx][:neo4j_version]
-  action        [:install]
-  has_binaries  [ 'bin/neo4j-shell' ]
-  not_if{ ::File.exists?("#{node[:pdx][:install_dir]}/bin/neo4j-shell") }
+script "install_neo4j" do
+  interpreter "bash"
+  user "root"
+  cwd "/usr/local/share"
+  environment("URL" => node[:pdx][:neo4_release_url], "EDITION" => node[:pdx][:neo4j_edition], "VERSION" => node[:pdx][:neo4j_version], "USER" => node[:vertx][:user], "GROUP" => node[:vertx][:group] )
+  code <<-EOH
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    NEO4J_PACKAGE=neo4j-${EDITION}-${VERSION}
+    TMP_DIST=/tmp/${NEO4J_PACKAGE}.tar.gz
+    URL="http://neo4j.com/artifact.php?name=neo4j-${EDITION}-${VERSION}-unix.tar.gz"
+    echo "URL: $URL - NEO4J_PACKAGE: $NEO4J_PACKAGE - TMP_DIST: $TMP_DIST" >/tmp/log.txt
+    [[ ! -f "$TMP_DIST" ]] && curl "$URL" -o $TMP_DIST 2>>/tmp/log.txt
+    [[ ! -d "/usr/local/share/$NEO4J_PACKAGE" ]] && tar xvfz $TMP_DIST 2>&1 >>/tmp/log.txt
+    chown -R $USER:$GROUP /usr/local/share/$NEO4J_PACKAGE
+    [[ -h /usr/share/neo4j ]] && rm -f /usr/share/neo4j
+    ln -fs /usr/local/share/$NEO4J_PACKAGE /usr/share/neo4j
+  EOH
+end
+
+template "/usr/share/neo4j/conf/neo4j.properties" do
+  source        "neo4j.properties.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :pdx => node[:pdx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
+end
+
+template "/usr/share/neo4j/conf/neo4j-server.properties" do
+  source        "neo4j-server.properties.erb"
+  owner         node[:vertx][:user]
+  group         node[:vertx][:group]
+  mode          "0644"
+  variables     :pdx => node[:pdx]
+  notifies      :restart, "service[vertx]", :delayed if startable?(node[:vertx])
 end
 

@@ -11,4 +11,3 @@ depends 'metachef'
 depends 'vertx'
 depends 'vertx-nginx'
 depends 'aws'
-
