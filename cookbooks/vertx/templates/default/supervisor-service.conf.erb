@@ -3,7 +3,8 @@ command=<%= @vertx[:mods_dir] + "/" + @mod_conf['mod'] + ".run" %>
 process_name=<%= @mod_conf['mod'] %>
 autostart=true
 autorestart=true
-stopsignal=QUIT
+stopsignal=TERM
+stopwaitsecs=30
 user=<%= @vertx[:user] %>
 group=<%= @vertx[:group] %>
 
