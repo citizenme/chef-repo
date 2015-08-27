@@ -1,5 +1,5 @@
 
-default[:vertx][:version]     = '2.1.5'
+default[:vertx][:version]     = '2.1.6'
 default[:vertx][:home_dir]    = '/usr/share/vertx'
 default[:vertx][:conf_dir]    = '/usr/share/vertx/conf'
 default[:vertx][:mods_dir]    = '/usr/share/vertx/mods'
@@ -15,8 +15,12 @@ default[:groups][:vertx][:gid]      = 2003
 default[:vertx][:pid_dir]           = '/home/vertx'
 
 # Hazelcast - remember to update version with vert.x version
-default[:vertx][:hazelcast][:version] = '3.2.3'
+default[:vertx][:hazelcast][:version] = '3.5.2'
 default[:vertx][:hazelcast][:cloud_url] = 'http://central.maven.org/maven2/com/hazelcast/hazelcast-cloud/' + node[:vertx][:hazelcast][:version] + '/hazelcast-cloud-' + node[:vertx][:hazelcast][:version] + '.jar'
+
+# This is a fix for hazelcast bug https://github.com/hazelcast/hazelcast/issues/5653
+default[:vertx][:hazelcast][:url] = 'http://central.maven.org/maven2/com/hazelcast/hazelcast/' + node[:vertx][:hazelcast][:version] + '/hazelcast-' + node[:vertx][:hazelcast][:version] + '.jar'
+
 default[:vertx][:hazelcast][:group][:name]      = 'replacemename'
 default[:vertx][:hazelcast][:group][:password]  = 'replacemepassword'
 

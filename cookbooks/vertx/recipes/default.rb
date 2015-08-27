@@ -72,3 +72,13 @@ remote_file "#{node[:vertx][:lib_dir]}/hazelcast-cloud-#{node[:vertx][:hazelcast
   source "#{node[:vertx][:hazelcast][:cloud_url]}"
 end
 
+# This is a fix for hazelcast bug https://github.com/hazelcast/hazelcast/issues/5653
+if node[:vertx][:version] == '2.1.6'
+  remote_file "#{node[:vertx][:lib_dir]}/hazelcast-#{node[:vertx][:hazelcast][:version]}.jar" do
+    source "#{node[:vertx][:hazelcast][:url]}"
+  end
+
+  file "#{node[:vertx][:lib_dir]}/hazelcast-3.5.jar" do
+    action	:delete
+  end
+end
