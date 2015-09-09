@@ -1,5 +1,5 @@
 
-default[:pdx][:neo4j_version]           = "2.2.3"
+default[:pdx][:neo4j_version]           = "2.2.4"
 default[:pdx][:neo4j_edition]		= "enterprise"
 default[:pdx][:neo4j_release_url]       = "http://neo4j.com/artifact.php?name=neo4j-:neo4j_edition:-:neo4j_version:-unix.tar.gz"
 default[:pdx][:neo4j_home_dir]          = '/usr/share/neo4j'
